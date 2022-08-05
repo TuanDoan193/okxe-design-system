@@ -1,17 +1,39 @@
 <template>
   <div class="hello">
     <OkxeButton  label="Tesst" />
+    <h2>Radio Button</h2>
+    <OkxeRadioButton :value="radioValue" :options="radioOptions" />
   </div>
 </template>
 
 <script>
 import OkxeButton from './OkxeButton.vue'
+import OkxeRadioButton from './OkxeRadioButton.vue'
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
   },
-  components: { OkxeButton }
+  components: { OkxeButton, OkxeRadioButton },
+  data() {
+    return {
+        radioValue: 1,
+        radioOptions: [
+            {
+                text: 'Option 1',
+                value: 1
+            },
+            {
+                text: 'Option 2',
+                value: 2
+            },
+            {
+                text: 'Option 3',
+                value: 3
+            }
+        ]
+    }
+  }
 }
 </script>
 
