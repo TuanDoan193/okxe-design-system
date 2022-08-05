@@ -3,6 +3,7 @@
         <input type="checkbox" v-model="checked" @change="onChange" id="checkbox" class="offscreen"  :disabled="disabled">
         <label for="checkbox" class="switch" :class="classes"></label>
         <label for="checkbox" class="okxe-toggle__text"><slot /></label>
+        <!-- ahsdjk -->
     </div>
 </template>
 <script>
