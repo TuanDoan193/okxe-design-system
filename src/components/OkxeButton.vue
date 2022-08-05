@@ -1,8 +1,14 @@
 <template>
     <div class="button-component"  :class="classes">
-        <v-btn depressed @click="onClick" :style="styles" :disabled="disabled">
-            <v-layout align-center justify-center>
-                <div class="button-component__icon pr-2" v-if="$slots['icon']">
+        <v-btn
+            depressed
+            @click="onClick"
+            :style="styles"
+            :disabled="disabled"
+            :color="backgroundColor"
+        >
+            <v-layout d-flex align-center justify-center>
+                <div class="button-component__icon" v-if="$slots['icon']">
                     <slot name="icon"/>
                 </div>
                 <div v-if="label" class="button-component__label" >
@@ -17,20 +23,70 @@
 export default {
     name: 'button-component',
     props: {
-        label: String,
-        icon: String,
-        large: Boolean,
-        medium: Boolean,
-        small: Boolean,
-        width: String,
-        backgroundColor: String,
-        disabled: Boolean,
-        colorText: String,
-        outLinedColor: String,
-        borderRadius: String,
-        circleButtonMedium: Boolean,
-        circleButtonSmall: Boolean,
-        bottomFixed: Boolean,
+        label: {
+            type: String,
+            default: ''
+        },
+        icon: {
+            type: String,
+            default: ''
+        },
+        large: {
+            type: Boolean,
+            default: false
+        },
+        medium: {
+            type: Boolean,
+            default: false
+        },
+        small: {
+            type: Boolean,
+            default: false
+        },
+        width: {
+            type: String,
+            default: ''
+        },
+        backgroundColor: {
+            type: String,
+            default: '#00BCC3'
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
+        colorText: {
+            type: String,
+            default: ''
+        },
+        outLinedColor: {
+            type: String,
+            default: ''
+        },
+        borderRadius: {
+            type: String,
+            default: ''
+        },
+        circleButtonMedium: {
+            type: Boolean,
+            default: false
+        },
+        circleButtonSmall: {
+            type: Boolean,
+            default: false
+        },
+        circleButtonLarge: {
+            type: Boolean,
+            default: false
+        },
+        circleButton: {
+            type: String,
+            default: ''
+        },
+        bottomFixed: {
+            type: Boolean,
+            default: false
+        },
     },
     computed: {
         styles() {
@@ -39,7 +95,7 @@ export default {
                 styles["color"] = this.colorText;
             }
             if (this.width) {
-                styles["width"] = this.width.includes('px') ? this.width : this.width + 'px'
+                styles["width"] = this.width.includes('px') ? this.width + ' !important' : this.width + 'px !important'
             }
             if (this.borderRadius) {
                 styles["border-radius"] = this.borderRadius.includes('px') ? this.borderRadius : this.borderRadius   + 'px'
@@ -66,7 +122,7 @@ export default {
             if (this.circleButtonMedium) {
                 result.push('circle-button-medium')
             }
-             if (this.circleButtonSmall) {
+            if (this.circleButtonSmall) {
                 result.push('circle-button-small')
             }
             if (this.bottomFixed) {
@@ -75,10 +131,21 @@ export default {
             if (this.disabled) {
                 result.push('disabled')
             }
+            switch (this.circleButton) {
+                case 'large':
+                case 'medium':
+                case 'small':
+                    result.push('circle-button');
+                    result.push('circle-button__' + this.circleButton)
+                    break;
+                default:
+                    break
+            }
             return result;
         }
     },
     created() {
+        // console.log('thadiohsiodhas', this.styles)
     },
     methods: {
         onClick(e) {
@@ -90,15 +157,22 @@ export default {
 <style lang="sass" scoped>
 .button-component
     background-color: transparent
+    margin: 12px 16px 24px
     .v-btn
         width: 200px
-        height: 48px
+        height: 48px !important
         color: #ffffff
         background-color: #00BCC3
         min-width: 0
         border-radius: 8px
+        .layout
+            flex: 0 0 auto
+            .button-component__icon
+                margin-right: 8px
     .v-btn::before
         background-color: transparent
+    .v-btn:not(.v-btn--round).v-size--default
+        min-width: 0 !important
     &.background-white > .v-btn
         background-color: #fff
         .button-component__label
@@ -118,17 +192,40 @@ export default {
         height: 40px !important
     &.small > .v-btn
         height: 32px !important
-    &.circle-button-medium > .v-btn
+    &.circle-button > .v-btn
         border-radius: 50%
-        width: 48px
-        height: 48px
         .button-component__icon
             padding-right: 0 !important
+            margin-right: 0 !important
+    &.circle-button__large > .v-btn
+        width: 48px !important
+        height: 48px !important
+    &.circle-button__medium > .v-btn
+        width: 36px !important
+        height: 36px !important
+    &.circle-button__small > .v-btn
+        width: 32px !important
+        height: 32px !important
+    &.circle-button-large > .v-btn
+        border-radius: 50%
+        width: 48px !important
+        height: 48px !important
+        .button-component__icon
+            padding-right: 0 !important
+            margin-right: 0 !important
+    &.circle-button-medium > .v-btn
+        border-radius: 50%
+        width: 36px !important
+        height: 36px !important
+        .button-component__icon
+            padding-right: 0 !important
+            margin-right: 0 !important
     &.circle-button-small > .v-btn
         border-radius: 50%
-        width: 36px
-        height: 36px
+        width: 32px !important
+        height: 32px !important
         .button-component__icon
+            margin-right: 0 !important
             padding-right: 0 !important
     &.bottom-fixed > .v-btn
         bottom: 0
@@ -138,14 +235,16 @@ export default {
         transform: translateX(-50%)
         z-index: 2
         margin: 0
+        width: 720px !important
+        max-width: 100% !important
     &.disabled > .v-btn
         background-color: #D6D9DB
         cursor: not-allowed
-    &.out-line > .v-btn
 .button-component__label
     font-size: 14px
     font-style: normal
     font-weight: 600
+    text-transform: none
     &::first-letter
-        text-transform: capitalize
+        text-transform: capitalize !important
 </style>
