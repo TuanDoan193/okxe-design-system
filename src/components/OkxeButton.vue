@@ -1,12 +1,12 @@
 <template>
     <div class="button-component"  :class="classes">
-        <v-btn flat @click="onClick" :style="styles" :disabled="disabled">
+        <v-btn depressed @click="onClick" :style="styles" :disabled="disabled">
             <v-layout align-center justify-center>
                 <div class="button-component__icon pr-2" v-if="$slots['icon']">
                     <slot name="icon"/>
                 </div>
                 <div v-if="label" class="button-component__label" >
-                    <slot name="label"/>
+                    {{ label }}
                 </div>
                 <slot />
             </v-layout>
